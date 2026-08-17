@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 from transformers import AutoTokenizer
 from configloader import ConfigLoader
-from utils import id2label, id2label
+from utils import id2label
 from pathlib import Path
 
 

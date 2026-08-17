@@ -53,7 +53,10 @@ def train(cfg):
     make_dir(model_save_dir)
     save_label_map(f"{model_save_dir}/label_map.json")
 
-    tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-chinese")
+    if  (Path(cfg.model.tokenizer_save_dir)/"tokenizer_config.json").exists():
+        tokenizer = AutoTokenizer.from_pretrained(cfg.model.tokenizer_save_dir)
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(cfg.model.model_name)
 
     train_dataset = NewsDataset(tokenizer, max_len)
     train_dataset.load(train_path)

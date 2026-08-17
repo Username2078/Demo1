@@ -12,15 +12,15 @@ class TextPredict:
         self.label_info = load_label_map(f"{cfg.model.model_save_dir}/label_map.json")
         self.class_names = self.label_info["class_names"]
         self.max_len = cfg.model.max_len
+        self.model.load_state_dict(torch.load(f"{cfg.model.model_save_dir}/best_bert.bin", weights_only=True))
 
     def predict(self, text):
-        self.model.load_state_dict(torch.load(f"{cfg.model.model_save_dir}/best_bert.bin", weights_only=True))
         input = self.tokenizer(text, max_length= self.max_len,
                                truncation=True, padding="max_length",
                                return_tensors="pt")
         input_ids = input["input_ids"].to(self.device)
         attention_mask = input["attention_mask"].to(self.device)
-
+        self.model.eval()
         with torch.no_grad():
             _, logits = self.model(input_ids=input_ids, attention_mask=attention_mask)
             pred_idx = int(torch.argmax(logits, dim=1).cpu().item())
