@@ -1,0 +1,28 @@
+{
+  "data": {
+    "train_path": "../data/demo1/train_3k.txt",
+    "test_path": "../data/demo1/test_1k.txt",
+    "eval_path" : "../data/demo1/dev_1k.txt"
+  },
+  "model": {
+    "model_name": "google-bert/bert-base-chinese",
+    "model_save_dir": "../models/best_bert",
+    "tokenizer_save_dir": "../models/tokenizer",
+    "max_len": 64,
+    "num_classes" : 15,
+    "dropout" : 0.1
+  },
+  "train": {
+    "batch_size": 32,
+    "epochs": 15,
+    "lr": 0.00002,
+    "early_stop_patience": 3,
+    "seed" : 42
+  },
+  "runtime": {
+    "device": "cuda"
+  },
+  "swanlab": {
+    "experiment_name": "训练 lr = 0.00002"
+  }
+}
