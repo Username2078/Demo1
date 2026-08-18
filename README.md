@@ -28,6 +28,7 @@ Demo1
 │   └── config.json           # 配置文件
 ├── data                      # 数据集文件
 ├── models
+│   ├── origin_bert           # 原始模型
 │   ├── best_bert             # 模型存储
 │   └── tokenizer             # 分词器存储
 ├── src
