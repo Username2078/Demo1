@@ -18,9 +18,9 @@ def test(cfg):
     max_len = cfg.model.max_len
     test_data_path =  cfg.data.test_path
 
-    test_dataset = NewsDataset(tokenizer, max_len)
+    test_dataset = NewsDataset(max_len)
     test_dataset.load(test_data_path)
-    test_dataloader = DataLoader(test_dataset, batch_size=cfg.train.batch_size, shuffle=False)
+    test_dataloader = DataLoader(test_dataset, batch_size=cfg.train.batch_size, shuffle=False, collate_fn=get_collate_fn(tokenizer, max_len))
 
     total_loss = 0.0
     total_acc = 0

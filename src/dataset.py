@@ -8,9 +8,8 @@ from pathlib import Path
 
 # 重写 __init__、__len__、__getitem__
 class NewsDataset(Dataset):
-    def __init__(self, tokenizer, max_len):
+    def __init__(self, max_len):
         self.samples = []
-        self.tokenizer = tokenizer
         self.max_len = max_len
 
     def load(self, file_path):
@@ -31,15 +30,11 @@ class NewsDataset(Dataset):
         item = self.samples[index]
         text = item["text"]
         id = int(item["id"])
-        label = torch.tensor(id2label[id], dtype=torch.long)
+        labels = torch.tensor(id2label[id], dtype=torch.long)
 
-        output = self.tokenizer(text, max_length=self.max_len, truncation=True,
-                                padding="max_length", return_tensors="pt")
-        output["labels"] = label
         return{
-            "input_ids": output["input_ids"].squeeze(0),
-            "attention_mask": output["attention_mask"].squeeze(0),
-            "labels": output["labels"]
+            "text": text,
+            "labels": labels
         }
 
 if __name__ == "__main__":

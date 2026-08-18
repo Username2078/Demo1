@@ -4,6 +4,9 @@ import torch
 import os
 import json
 from pathlib import Path
+
+from transformers import AutoTokenizer
+
 from configloader import ConfigLoader
 import sklearn.metrics as skm
 
@@ -151,6 +154,20 @@ def set_seed(seed=42):
     # 关闭cuda非确定性
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
+def get_collate_fn(tokenizer, max_len):
+    def collate_fn(batch):
+        text = [item["text"] for item in batch]
+        labels = [item["labels"] for item in batch]
+        outputs = tokenizer(text, max_length=max_len, truncation=True, padding="longest", return_tensors="pt")
+        labels = torch.tensor(labels)
+        outputs["labels"] = labels
+        return {
+            "input_ids": outputs["input_ids"].squeeze(0),
+            "attention_mask": outputs["attention_mask"].squeeze(0),
+            "labels": outputs["labels"]
+        }
+    return collate_fn
 
 if __name__ == "__main__":
     # 测试 是否正确

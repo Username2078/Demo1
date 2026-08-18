@@ -54,12 +54,12 @@ def train(cfg):
     save_label_map(f"{model_save_dir}/label_map.json")
     tokenizer = AutoTokenizer.from_pretrained(cfg.model.tokenizer_save_dir)
 
-    train_dataset = NewsDataset(tokenizer, max_len)
+    train_dataset = NewsDataset(max_len)
     train_dataset.load(train_path)
-    eval_dataset = NewsDataset(tokenizer, max_len)
+    eval_dataset = NewsDataset(max_len)
     eval_dataset.load(eval_path)
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataloader = DataLoader(eval_dataset, batch_size=batch_size, shuffle=False)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=get_collate_fn(tokenizer, max_len))
+    test_dataloader = DataLoader(eval_dataset, batch_size=batch_size, shuffle=False, collate_fn=get_collate_fn(tokenizer, max_len))
 
     model = BertClassificationModel(cfg)
     model.to(device)
