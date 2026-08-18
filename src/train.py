@@ -52,11 +52,7 @@ def train(cfg):
 
     make_dir(model_save_dir)
     save_label_map(f"{model_save_dir}/label_map.json")
-
-    if  (Path(cfg.model.tokenizer_save_dir)/"tokenizer_config.json").exists():
-        tokenizer = AutoTokenizer.from_pretrained(cfg.model.tokenizer_save_dir)
-    else:
-        tokenizer = AutoTokenizer.from_pretrained(cfg.model.model_name)
+    tokenizer = AutoTokenizer.from_pretrained(cfg.model.tokenizer_save_dir)
 
     train_dataset = NewsDataset(tokenizer, max_len)
     train_dataset.load(train_path)

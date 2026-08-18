@@ -5,7 +5,7 @@ from transformers import BertModel
 class BertClassificationModel(nn.Module):
     def __init__(self, cfg):
         super(BertClassificationModel, self).__init__()
-        self.bert = BertModel.from_pretrained(cfg.model.model_name)
+        self.bert = BertModel.from_pretrained(cfg.model.origin_model_dir)
         self.dropout = nn.Dropout(cfg.model.dropout)
         self.linear = nn.Linear(self.bert.config.hidden_size, cfg.model.num_classes)
 
